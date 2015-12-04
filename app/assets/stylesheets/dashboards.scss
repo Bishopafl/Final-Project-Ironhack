@@ -1,0 +1,60 @@
+// // Place all the styles related to the Dashboards controller here.
+// // They will automatically be included in application.css.
+// // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.nav-bar {
+	background-color: silver;
+	border: 1px solid black;
+	margin-bottom: 15px;
+}
+
+.nav-btn {
+	padding: 20px;
+}
+
+.image-computer {
+	width: 100%;
+	height: 90vh;
+	margin-top: -2%;
+}
+
+.search-bar {
+	width: 300px;
+}
+
+.search-bar-box {
+	position: absolute;
+	top: 50%;
+	left: 40%;
+	transform: translateY(-50%);
+	border: 30px solid silver;
+}
+
+.logo-header {
+	position: absolute;
+	top:30%;
+	left: 45%;
+	transform: translateY(-50%);
+}
+
+.logo-text {
+	font-size: 82px;
+	top:30%;
+	transform: translateX(-25%);
+}
+
+.logo-N-box {
+	background-color: blue;
+}
+
+.phrase {
+	position: absolute;
+	font-size: 30px;
+	color: white;
+	top:65%;
+	left: 45%;
+	transform: translateX(-30%);
+	background-color: black;
+	border-radius: 5px;
+
+}

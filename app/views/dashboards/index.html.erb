@@ -1,0 +1,45 @@
+<div class="container-fluid">
+	<div class="row nav-bar"> <!-- top nav bar -->
+		<div class="col-sm-3">
+			<!-- logo goes here -->
+			logo goes here
+		</div>
+		<div class="col-sm-9 nav-btn">
+			<div class="pull-right">
+				
+				<a href="/users/sign_in" class="btn btn-primary">
+					Sign In
+				</a>
+				<a href="/users/sign_up" class="btn btn-primary">
+					Sign up
+				</a>
+				<a href="/forums" class="btn btn-primary">
+					Forum
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="image-background">
+			<%=image_tag("computer.jpg", alt: "woman on computer", class: "image-computer")%>
+		</div>
+			<!-- NIZAR HELP  -->
+			<div class="logo-N-box">
+				<div class="logo-header">
+					<h1 class="logo-text">Eldercated</h1>
+				</div>
+				<div class="search-bar-box">
+					<form action="/specialists">
+						<input class="search-bar" type="text" name="search-bar" placeholder="Search Conditions, Specialists, etc.">
+					</form>
+				</div>
+			</div>
+			<div>
+				<em class="phrase">
+					When It's Your Turn to Take Care of Them
+				</em>
+			</div>
+		</div>	
+	</div>
+</div>
