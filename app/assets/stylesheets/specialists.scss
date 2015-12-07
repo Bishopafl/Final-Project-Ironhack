@@ -4,3 +4,26 @@
 #map {
 	height: 100vh;
 }
+
+.hover-area {
+  width: 25%;
+  position: relative;
+}
+  .hover-area > .image {
+    width: 100%;
+  }
+
+.hover-box {
+  border: 2px solid black;
+  position: absolute;
+  right: -255px;
+  width: 250px;
+  top: 50%;
+  display: none;
+  background-color: white;
+  z-index: 2;
+}
+
+.hover-area:hover > .hover-box {
+  display: block;
+}

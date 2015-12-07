@@ -52,7 +52,7 @@ function createMap(position) {
 		console.log("Your map isn't working...")
 }
 
-infowindow = new google.maps.InfoWindow();
+var infowindow;
 
 function doctorMarker(position){
 	var latcoord = position.lat;
@@ -60,6 +60,7 @@ function doctorMarker(position){
 	var userlatlng = (latcoord, lngcoord)
 	var api_key = "66b0850367645bf27af70b06c3979f7f"
 	var resource_url = 'https://api.betterdoctor.com/2014-09-12/doctors?location='+latcoord+','+lngcoord+',200&skip=0&limit=10&user_key=' + api_key;
+	infowindow = new google.maps.InfoWindow();
 
 	$.ajax({
 		url: resource_url,
@@ -68,10 +69,37 @@ function doctorMarker(position){
 			response.data.forEach(function(dr_ptn){
 				var drlatcoord = dr_ptn.practices[0].lat;
 				var drlngcoord = dr_ptn.practices[0].lon;
+				var name = dr_ptn.profile.first_name + " " + dr_ptn.profile.last_name;
 				var latlngPos = new google.maps.LatLng(drlatcoord, drlngcoord);
+				var street = dr_ptn.practices[0].visit_address.street;
+				var city = dr_ptn.practices[0].visit_address.city;
+				var state = dr_ptn.practices[0].visit_address.state;
+				var zip = dr_ptn.practices[0].visit_address.zip;
+				var phone = dr_ptn.practices[0].phones[0].number;
+				var picture = dr_ptn.profile.image_url;
 				
+				var marker = createMarker(latlngPos)
 
-				createMarker(latlngPos)
+				google.maps.event.addListener(marker, "click", function() {
+					var html = '\
+						<h5>'+name+'</h5>\
+						<img class="image" src='+ picture +'>\
+						<br>\
+						<span>'+ 'Contact: '+ phone +'</span>\
+						<div class="address">\
+						<span class="street">\
+						'+ street +'\
+						</span>\
+						<br>\
+						<span class="city-zip">\
+						'+city + ',' + state+ ',' + zip +'\
+						</span>\
+						</div>\
+						';
+					infowindow.setContent(html);
+					infowindow.open(map, this);
+				})
+
 				});
 		},
 		error: function(){
@@ -85,6 +113,7 @@ function createMarker(position) {
 		position: position,
 		map: map
 	});
+	return marker;
 }
 
 function searchApi (position) {
@@ -108,29 +137,26 @@ function displayDoctors (response) {
 	response.data.forEach(function(dr){
 		var name = dr.profile.first_name + " " + dr.profile.last_name;
 		var picture = dr.profile.image_url;
-		var phone = dr.practices[0].phones[0].number;
 		var street = dr.practices[0].visit_address.street;
 		var city = dr.practices[0].visit_address.city;
 		var state = dr.practices[0].visit_address.state;
 		var zip = dr.practices[0].visit_address.zip;
+		var speciality = dr.specialties[0].actor;
+		var bio = dr.profile.bio;
 		var html = '\
 			<li>\
 				<h3>'+ name +'</h3>\
-				<img class="image" src='+ picture +'>\
+				<span><strong>' + speciality + '</strong></span>\
 				<br>\
-				<span>'+ 'Contact: '+ phone +'</span>\
-				<div class="address">\
-					<span class="street">\
-					'+ street +'\
-					</span>\
-					<br>\
-					<span class="city-zip">\
-						'+city + ',' + state+ ',' + zip +'\
-					</span>\
+				<div class="hover-area">\
+				<img class="js-image" src='+ picture +'>\
+				<div class="hover-box">' + bio + '</div>\
 				</div>\
+				<br>\
 			</li>';
 			
 		$(".js-dr-list").append(html);
+		
 	});
 }
 
