@@ -32,21 +32,52 @@ function onLocation(position) {
 	};
 
 	createMap(myPosition);
-	searchApi(myPosition)
+	searchApi(myPosition);
+	doctorMarker(myPosition)
 	// add dr location to map 
 }
 
 function createMap(position) {
+	var latlngPos = new google.maps.LatLng([]);
+
 	var mapOptions = {
 		center: position,
-		zoom: 17
+		zoom: 13
 	};
 	map = new google.maps.Map($('#map')[0], mapOptions);
 	createMarker(position)
 }
 
-function onError(err) {
-	console.log("Your map isn't working...")
+	function onError(err) {
+		console.log("Your map isn't working...")
+}
+
+infowindow = new google.maps.InfoWindow();
+
+function doctorMarker(position){
+	var latcoord = position.lat;
+	var lngcoord = position.lng;
+	var userlatlng = (latcoord, lngcoord)
+	var api_key = "66b0850367645bf27af70b06c3979f7f"
+	var resource_url = 'https://api.betterdoctor.com/2014-09-12/doctors?location='+latcoord+','+lngcoord+',200&skip=0&limit=10&user_key=' + api_key;
+
+	$.ajax({
+		url: resource_url,
+		success: function(response){
+			console.log(response)
+			response.data.forEach(function(dr_ptn){
+				var drlatcoord = dr_ptn.practices[0].lat;
+				var drlngcoord = dr_ptn.practices[0].lon;
+				var latlngPos = new google.maps.LatLng(drlatcoord, drlngcoord);
+				
+
+				createMarker(latlngPos)
+				});
+		},
+		error: function(){
+			console.log("no go bro")
+		}
+	});
 }
 
 function createMarker(position) {
@@ -73,9 +104,7 @@ function searchApi (position) {
 	});
 }
 
-
 function displayDoctors (response) {
-	console.log(response)
 	response.data.forEach(function(dr){
 		var name = dr.profile.first_name + " " + dr.profile.last_name;
 		var picture = dr.profile.image_url;
@@ -88,7 +117,7 @@ function displayDoctors (response) {
 			<li>\
 				<h3>'+ name +'</h3>\
 				<img class="image" src='+ picture +'>\
-				<br>\	
+				<br>\
 				<span>'+ 'Contact: '+ phone +'</span>\
 				<div class="address">\
 					<span class="street">\
@@ -103,6 +132,5 @@ function displayDoctors (response) {
 			
 		$(".js-dr-list").append(html);
 	});
-
 }
 
